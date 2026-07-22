@@ -84,7 +84,6 @@ generated_plugin_registrant.dart
 
 # Hive (if generated locally)
 *.hive
-*.lock
 
 # Coverage
 lcov.info
