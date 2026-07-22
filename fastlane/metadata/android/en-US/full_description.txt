@@ -1,0 +1,9 @@
+A simple, relaxing, yet incredibly challenging puzzle game. 
+
+## Features
+
+- **Endless Levels**: The game gets progressively harder as you play. The board gets bigger, more colors are added, and you have fewer moves to spare!
+- **Random Puzzles**: Just want a quick challenge? Play a random puzzle on Easy, Medium, or Hard difficulty.
+- **Undo Move**: Made a mistake? Use the undo button to go back a step.
+- **Auto-Save**: Your progress is automatically saved, so you can pick up exactly where you left off.
+- **Privacy First**: 100% ad-free, absolutely no trackers, and fully GDPR compliant. Play in total peace!

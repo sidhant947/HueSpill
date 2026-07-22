@@ -16,4 +16,7 @@ The goal of the game is to fill the entire board with a single color.
 - **Auto-Save**: Your progress is automatically saved, so you can pick up exactly where you left off.
 - **Privacy First**: 100% ad-free, absolutely no trackers, and fully GDPR compliant. Play in total peace!
 
+## License
+This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.
+
 Enjoy the game! ☕

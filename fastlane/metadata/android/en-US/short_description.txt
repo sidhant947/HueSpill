@@ -1,0 +1,1 @@
+Fill the entire board with a single color.
