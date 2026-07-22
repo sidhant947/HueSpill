@@ -1,0 +1,92 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ / Android Studio
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code
+.vscode/
+
+# Flutter/Dart/Pub
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Symbolication
+app.*.symbols
+
+# Obfuscation
+app.*.map.json
+
+# Android build artifacts
+/android/app/debug/
+/android/app/profile/
+/android/app/release/
+
+# Environment & secrets
+.env
+.env.*
+*.env
+key.properties
+**/*.keystore
+**/*.jks
+
+# Generated
+*.g.dart
+*.freezed.dart
+*.mocks.dart
+*.mock.dart
+*.gr.dart
+*.gen.dart
+generated_plugin_registrant.dart
+
+# Flutter web
+/web/favicon.png
+/web/icons/
+/web/manifest.json
+
+# Platform-specific
+/ios/Pods/
+/ios/.symlinks/
+/ios/Flutter/Flutter.framework
+/ios/Flutter/Flutter.podspec
+/ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+/linux/flutter/ephemeral/
+/macos/Pods/
+/macos/Flutter/ephemeral/
+/windows/flutter/ephemeral/
+/android/.gradle/
+/android/captures/
+/android/gradlew
+/android/gradlew.bat
+/android/local.properties
+/android/.cxx/
+
+# Hive (if generated locally)
+*.hive
+*.lock
+
+# Coverage
+lcov.info
+
+/linux/
