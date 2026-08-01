@@ -5,15 +5,15 @@ class HueSpillEngine {
   final Random _random = Random();
   
   static const List<Color> colors = [
-    Color(0xFF3B82F6), // Blue
-    Color(0xFFEC4899), // Pink
-    Color(0xFF22C55E), // Green
-    Color(0xFFF97316), // Orange
     Color(0xFFEF4444), // Red
+    Color(0xFFF97316), // Orange
     Color(0xFFEAB308), // Yellow
-    Color(0xFF8B5CF6), // Purple
-    Color(0xFF14B8A6), // Teal
-    Color(0xFF6366F1), // Indigo
+    Color(0xFF22C55E), // Green
+    Color(0xFF58FFC6), // Mint
+    Color(0xFF58b4FF), // Light Blue
+    Color(0xFF0000FF), // Dark Blue
+    Color(0xFF7B22B0), // Purple
+    Color(0xFFEC4899), // Pink
   ];
 
   static int gridSizeForLevel(int level) {
