@@ -1,3 +1,7 @@
+<p align="center">
+    <img src="https://github.com/sidhant947/HueSpill/blob/main/fastlane/metadata/android/en-US/images/icon.png?raw=true" height="173"/></a>
+</p>
+
 # Hue Spill 🌊
 
 Welcome to **Hue Spill**! A simple, relaxing, yet incredibly challenging puzzle game. 
@@ -20,3 +24,12 @@ The goal of the game is to fill the entire board with a single color.
 This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.
 
 Enjoy the game! ☕
+
+## Screenshots
+### Title screen
+
+![Title screen](https://github.com/sidhant947/HueSpill/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
+
+### Random puzzle
+
+![Random puzzle](https://github.com/sidhant947/HueSpill/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png)
