@@ -1,0 +1,8 @@
+<svg width="170" height="170">
+    <rect width="150" height="150" x="10" y="10" rx="20" ry="20" style="fill:#353535;stroke:#808080;stroke-width:2" />
+    <rect width="45" height="45" x="35" y="35" rx="10" fill="#58B4FF"/>
+    <rect width="45" height="45" x="90" y="35" rx="10" fill="#EC4899"/>
+    <rect width="45" height="45" x="35" y="90" rx="10" fill="#EAB308"/>
+    <rect width="45" height="45" x="90" y="90" rx="10" fill="#22C55E"/>
+
+</svg>
