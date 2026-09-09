@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'package:huespill/ui/core/theme/app_colors.dart';
 import 'package:huespill/ui/core/widgets/tangible_button.dart';
 import 'package:huespill/ui/features/game/hue_spill/hue_spill_engine.dart';
 import 'package:huespill/ui/features/game/hue_spill/hue_spill_state.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:huespill/ui/providers.dart';
 
 final hueSpillViewModelProvider =
@@ -156,12 +156,10 @@ class _HueSpillViewState extends ConsumerState<HueSpillView> {
                       text: 'Buy Me a Coffee ☕',
                       isSecondary: true,
                       height: 50,
-                      onPressed: () async {
-                        final Uri url = Uri.parse('https://buymeacoffee.com/sidhant947');
-                        if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
-                          debugPrint('Could not launch $url');
-                        }
-                      },
+                      onPressed: () => launchUrl(
+                        Uri.parse('https://ko-fi.com/sidhant947'),
+                        mode: LaunchMode.externalApplication,
+                      ),
                     ),
                   ],
                 ),
@@ -177,6 +175,8 @@ class _HueSpillViewState extends ConsumerState<HueSpillView> {
   Widget build(BuildContext context) {
     final state = ref.watch(hueSpillViewModelProvider);
     final notifier = ref.read(hueSpillViewModelProvider.notifier);
+    final colors = ref.watch(gameColorsProvider);
+    final isColorblind = ref.watch(colorblindModeProvider);
 
     ref.listen<HueSpillState>(hueSpillViewModelProvider, (previous, next) {
       if (next.status != HueSpillStatus.playing &&
@@ -294,13 +294,13 @@ class _HueSpillViewState extends ConsumerState<HueSpillView> {
                                   final r = index ~/ state.gridSize;
                                   final c = index % state.gridSize;
                                   final colorIndex = state.grid[r][c];
-                                  return Transform.scale(
-                                    scale: 1.05,
-                                    child: AnimatedContainer(
-                                      duration: const Duration(milliseconds: 300),
-                                      curve: Curves.easeInOut,
-                                      color: HueSpillEngine.colors[colorIndex],
-                                    ),
+                                  return AnimatedGridTile(
+                                    r: r,
+                                    c: c,
+                                    color: colors[colorIndex],
+                                    symbol: isColorblind
+                                        ? HueSpillEngine.colorblindIcons[colorIndex]
+                                        : null,
                                   );
                                 },
                               ),
@@ -333,7 +333,7 @@ class _HueSpillViewState extends ConsumerState<HueSpillView> {
                         width: 56,
                         height: 56,
                         decoration: BoxDecoration(
-                          color: HueSpillEngine.colors[index],
+                          color: colors[index],
                           shape: BoxShape.circle,
                           border: Border.all(
                             color: Colors.white24,
@@ -342,7 +342,7 @@ class _HueSpillViewState extends ConsumerState<HueSpillView> {
                           boxShadow: isActive
                               ? [
                                   BoxShadow(
-                                    color: HueSpillEngine.colors[index]
+                                    color: colors[index]
                                         .withValues(alpha: 0.6),
                                     blurRadius: 12,
                                     spreadRadius: 2,
@@ -350,6 +350,15 @@ class _HueSpillViewState extends ConsumerState<HueSpillView> {
                                 ]
                               : null,
                         ),
+                        child: isColorblind
+                            ? Icon(
+                                HueSpillEngine.colorblindIcons[index],
+                                size: 26,
+                                color: colors[index].computeLuminance() > 0.45
+                                    ? Colors.black87
+                                    : Colors.white,
+                              )
+                            : null,
                       ),
                     ),
                   );
@@ -415,6 +424,88 @@ class _HueSpillViewState extends ConsumerState<HueSpillView> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class AnimatedGridTile extends StatefulWidget {
+  final int r;
+  final int c;
+  final Color color;
+  final IconData? symbol;
+
+  const AnimatedGridTile({
+    super.key,
+    required this.r,
+    required this.c,
+    required this.color,
+    this.symbol,
+  });
+
+  @override
+  State<AnimatedGridTile> createState() => _AnimatedGridTileState();
+}
+
+class _AnimatedGridTileState extends State<AnimatedGridTile> {
+  late Color _currentColor;
+  double _scale = 1.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentColor = widget.color;
+  }
+
+  @override
+  void didUpdateWidget(covariant AnimatedGridTile oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.color != widget.color) {
+      final delay = Duration(milliseconds: (widget.r + widget.c) * 35);
+      Future.delayed(delay, () {
+        if (mounted) {
+          setState(() {
+            _currentColor = widget.color;
+            _scale = 1.15;
+          });
+          Future.delayed(const Duration(milliseconds: 150), () {
+            if (mounted) {
+              setState(() {
+                _scale = 1.0;
+              });
+            }
+          });
+        }
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedScale(
+      scale: _scale * 1.05,
+      duration: const Duration(milliseconds: 150),
+      curve: Curves.easeOut,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeInOut,
+        color: _currentColor,
+        child: widget.symbol != null
+            ? Center(
+                child: FractionallySizedBox(
+                  widthFactor: 0.65,
+                  heightFactor: 0.65,
+                  child: FittedBox(
+                    child: Icon(
+                      widget.symbol,
+                      color: _currentColor.computeLuminance() > 0.45
+                          ? Colors.black87
+                          : Colors.white,
+                    ),
+                  ),
+                ),
+              )
+            : null,
+      ),
     );
   }
 }

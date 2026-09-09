@@ -4,16 +4,30 @@ import 'package:flutter/material.dart';
 class HueSpillEngine {
   final Random _random = Random();
   
-  static const List<Color> colors = [
-    Color(0xFFEF4444), // Red
-    Color(0xFFF97316), // Orange
-    Color(0xFFEAB308), // Yellow
-    Color(0xFF22C55E), // Green
-    Color(0xFF58FFC6), // Mint
-    Color(0xFF58b4FF), // Light Blue
-    Color(0xFF0000FF), // Dark Blue
-    Color(0xFF7B22B0), // Purple
-    Color(0xFFEC4899), // Pink
+  static const List<Color> defaultColors = [
+    Color(0xFFEF4444),
+    Color(0xFFF97316),
+    Color(0xFFEAB308),
+    Color(0xFF22C55E),
+    Color(0xFF58FFC6),
+    Color(0xFF58B4FF),
+    Color(0xFF0000FF),
+    Color(0xFF7B22B0),
+    Color(0xFFEC4899),
+  ];
+
+  static List<Color> colors = List.from(defaultColors);
+
+  static const List<IconData> colorblindIcons = [
+    Icons.circle,
+    Icons.close,
+    Icons.change_history,
+    Icons.square,
+    Icons.star,
+    Icons.diamond,
+    Icons.add,
+    Icons.favorite,
+    Icons.remove,
   ];
 
   static int gridSizeForLevel(int level) {

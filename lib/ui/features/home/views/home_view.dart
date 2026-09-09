@@ -157,7 +157,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   _circleButton(
                     icon: Icons.star_rounded,
                     iconColor: const Color(0xFFFFCC00),
-                    onTap: () => _launchUrl(''),
+                    onTap: () => _launchUrl('https://github.com/sidhant947/HueSpill'),
                   ),
                   if (state.progress != null)
                     Container(
@@ -186,88 +186,36 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   _circleButton(
                     icon: Icons.favorite_rounded,
                     iconColor: const Color(0xFFEF4444),
-                    onTap: () =>
-                        _launchUrl('https://buymeacoffee.com/sidhant947'),
+                    onTap: () => _launchUrl('https://ko-fi.com/sidhant947'),
                   ),
                 ],
               ),
               const Spacer(flex: 3),
 
-              // Color Flood Logo
-              Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.white24, width: 1.0),
-                ),
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 28,
-                          height: 28,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF3B82F6), // Blue
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                        ),
-                        const SizedBox(width: 6),
-                        Container(
-                          width: 28,
-                          height: 28,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFEC4899), // Pink
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 28,
-                          height: 28,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFEAB308), // Yellow
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                        ),
-                        const SizedBox(width: 6),
-                        Container(
-                          width: 28,
-                          height: 28,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF22C55E), // Green
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 28),
 
               // Game Title
-              const FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  'Hue Spill',
-                  style: TextStyle(
-                    fontFamily: 'BebasNeue',
-                    fontSize: 62,
-                    fontWeight: FontWeight.w900,
-                    color: Color(0xFF3B82F6), // Blue
-                    letterSpacing: 1.0,
+              ShaderMask(
+                shaderCallback: (bounds) => const LinearGradient(
+                  colors: [
+                    Color(0xFF3B82F6),
+                    Color(0xFFEC4899),
+                    Color(0xFFEAB308),
+                    Color(0xFF22C55E),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ).createShader(bounds),
+                child: const FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    'Hue Spill',
+                    style: TextStyle(
+                      fontFamily: 'BebasNeue',
+                      fontSize: 62,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.white,
+                      letterSpacing: 1.0,
+                    ),
                   ),
                 ),
               ),

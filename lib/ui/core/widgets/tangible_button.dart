@@ -46,28 +46,33 @@ class _TangibleButtonState extends State<TangibleButton> {
       onTapCancel: () {
         if (isInteractive) setState(() => _isPressed = false);
       },
-      child: Opacity(
-        opacity: isPressedNow ? 0.8 : 1.0,
-        child: Container(
-          height: widget.height,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: buttonBg,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: Colors.white24,
-              width: 1.0,
+      child: AnimatedScale(
+        scale: isPressedNow ? 0.95 : 1.0,
+        duration: const Duration(milliseconds: 100),
+        curve: Curves.easeOutCubic,
+        child: Opacity(
+          opacity: isPressedNow ? 0.9 : 1.0,
+          child: Container(
+            height: widget.height,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: buttonBg,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: Colors.white24,
+                width: 1.0,
+              ),
             ),
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            widget.text.toUpperCase(),
-            style: TextStyle(
-              fontFamily: 'BebasNeue',
-              color: textColor,
-              fontSize: 20,
-              fontWeight: FontWeight.w900,
-              letterSpacing: 1.5,
+            alignment: Alignment.center,
+            child: Text(
+              widget.text.toUpperCase(),
+              style: TextStyle(
+                fontFamily: 'BebasNeue',
+                color: textColor,
+                fontSize: 20,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 1.5,
+              ),
             ),
           ),
         ),
