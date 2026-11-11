@@ -8,12 +8,14 @@ class TangibleButton extends StatefulWidget {
     required this.onPressed,
     this.isSecondary = false,
     this.height = 56,
+    this.fontSize = 20,
   });
 
   final String text;
   final VoidCallback? onPressed;
   final bool isSecondary;
   final double height;
+  final double fontSize;
 
   @override
   State<TangibleButton> createState() => _TangibleButtonState();
@@ -69,7 +71,7 @@ class _TangibleButtonState extends State<TangibleButton> {
               style: TextStyle(
                 fontFamily: 'BebasNeue',
                 color: textColor,
-                fontSize: 20,
+                fontSize: widget.fontSize,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 1.5,
               ),

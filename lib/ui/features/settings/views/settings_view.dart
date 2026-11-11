@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:huespill/ui/core/theme/app_colors.dart';
 import 'package:huespill/ui/core/widgets/tangible_button.dart';
@@ -187,10 +188,7 @@ class SettingsView extends ConsumerWidget {
                       decoration: BoxDecoration(
                         color: AppColors.surface,
                         shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.white24,
-                          width: 1.0,
-                        ),
+                        border: Border.all(color: Colors.white24, width: 1.0),
                       ),
                       child: const Icon(
                         Icons.arrow_back_ios_new_rounded,
@@ -221,37 +219,71 @@ class SettingsView extends ConsumerWidget {
               child: ListView(
                 padding: const EdgeInsets.fromLTRB(24, 16, 24, 28),
                 children: [
-                  const Text(
-                    'ACCESSIBILITY',
-                    style: TextStyle(
-                      fontFamily: 'BebasNeue',
-                      fontSize: 22,
-                      fontWeight: FontWeight.w900,
-                      color: AppColors.headingDark,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
                   const SizedBox(height: 4),
-                  const Text(
-                    'Displays shape symbols on tiles to assist colorblind players.',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.subtext,
-                      fontWeight: FontWeight.w500,
+                  _settingLink(
+                    title: 'Follow on Twitter',
+                    onTap: () => launchUrl(
+                      Uri.parse('https://x.com/vgbhuop'),
+                      mode: LaunchMode.externalApplication,
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  TangibleButton(
-                    text: isColorblind
-                        ? 'Colorblind Mode: ON'
-                        : 'Colorblind Mode: OFF',
-                    isSecondary: !isColorblind,
-                    onPressed: () =>
-                        ref.read(colorblindModeProvider.notifier).toggle(),
+                  _settingLink(
+                    title: 'Follow on Mastodon',
+                    onTap: () => launchUrl(
+                      Uri.parse('https://mastodon.social/@sidhant947'),
+                      mode: LaunchMode.externalApplication,
+                    ),
                   ),
-                  const SizedBox(height: 28),
+                  _settingLink(
+                    title: 'Contact Email',
+                    onTap: () =>
+                        launchUrl(Uri.parse('mailto:sidhant947@proton.me')),
+                  ),
                   const Divider(color: Colors.white12),
-                  const SizedBox(height: 20),
+
+                  GestureDetector(
+                    onTap: () =>
+                        ref.read(colorblindModeProvider.notifier).toggle(),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.surface,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.white24, width: 1.0),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 6,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'COLORBLIND MODE',
+                            style: const TextStyle(
+                              fontFamily: 'BebasNeue',
+                              fontSize: 18,
+                              fontWeight: FontWeight.w900,
+                              color: AppColors.headingDark,
+                              letterSpacing: 1.0,
+                            ),
+                          ),
+                          Switch(
+                            value: isColorblind,
+                            activeThumbColor: Colors.white,
+                            activeTrackColor: const Color(0xFF10B981),
+                            inactiveThumbColor: AppColors.subtext,
+                            inactiveTrackColor: AppColors.primary,
+                            onChanged: (_) => ref
+                                .read(colorblindModeProvider.notifier)
+                                .toggle(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Divider(color: Colors.white12),
+                  const SizedBox(height: 10),
                   const Text(
                     'CUSTOMIZE PALETTE',
                     style: TextStyle(
@@ -287,12 +319,8 @@ class SettingsView extends ConsumerWidget {
                       final color = colors[index];
                       final hex = _toHex(color);
                       return GestureDetector(
-                        onTap: () => _showColorEditDialog(
-                          context,
-                          ref,
-                          index,
-                          color,
-                        ),
+                        onTap: () =>
+                            _showColorEditDialog(context, ref, index, color),
                         child: Container(
                           decoration: BoxDecoration(
                             color: AppColors.surface,
@@ -413,7 +441,9 @@ class SettingsView extends ConsumerWidget {
               TangibleButton(
                 text: 'Reset Everything',
                 onPressed: () async {
-                  await ref.read(homeViewModelProvider.notifier).resetProgress();
+                  await ref
+                      .read(homeViewModelProvider.notifier)
+                      .resetProgress();
                   if (dialogContext.mounted) Navigator.pop(dialogContext);
                 },
               ),
@@ -432,6 +462,34 @@ class SettingsView extends ConsumerWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _settingLink({required String title, required VoidCallback onTap}) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 14),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: AppColors.headingDark,
+              ),
+            ),
+            const Icon(
+              Icons.arrow_forward_ios_rounded,
+              size: 14,
+              color: AppColors.subtext,
+            ),
+          ],
         ),
       ),
     );

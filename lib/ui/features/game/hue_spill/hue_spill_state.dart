@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -60,6 +61,11 @@ class HueSpillState {
 
   double get progress => totalCells > 0 ? floodArea / totalCells : 0.0;
   bool get canUndo => moves > 0;
+  String get formattedTime {
+    final minutes = (elapsedSeconds ~/ 60).toString().padLeft(2, '0');
+    final seconds = (elapsedSeconds % 60).toString().padLeft(2, '0');
+    return '$minutes:$seconds';
+  }
 }
 
 class HueSpillViewModel extends StateNotifier<HueSpillState> {
@@ -68,6 +74,18 @@ class HueSpillViewModel extends StateNotifier<HueSpillState> {
   final _engine = HueSpillEngine();
 
   final List<HueSpillState> _history = [];
+  Timer? _timer;
+
+  void _startTimer() {
+    _timer?.cancel();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (state.status == HueSpillStatus.playing) {
+        state = state.copyWith(elapsedSeconds: state.elapsedSeconds + 1);
+      } else {
+        timer.cancel();
+      }
+    });
+  }
 
   void initGame(int level) {
     _history.clear();
@@ -76,10 +94,8 @@ class HueSpillViewModel extends StateNotifier<HueSpillState> {
 
     final grid = _engine.generateGrid(gridSize, numColors);
     
-    // Compute guaranteed minimum moves using greedy solver
     final greedyMoves = _engine.solveGreedy(grid, numColors);
     
-    // Exponentially decreasing padding: starts at +6, decays towards +1
     final padding = math.max(1, (6 - level * 0.15).floor());
     
     final maxMoves = greedyMoves + padding;
@@ -96,6 +112,7 @@ class HueSpillViewModel extends StateNotifier<HueSpillState> {
       totalCells: _engine.totalCells(grid),
       elapsedSeconds: 0,
     );
+    _startTimer();
   }
 
   void changeColor(int colorIndex) {
@@ -112,8 +129,10 @@ class HueSpillViewModel extends StateNotifier<HueSpillState> {
 
     if (_engine.isSolved(newGrid)) {
       newStatus = HueSpillStatus.won;
+      _timer?.cancel();
     } else if (newMoves >= state.maxMoves) {
       newStatus = HueSpillStatus.lost;
+      _timer?.cancel();
     }
 
     _history.add(state);
@@ -128,11 +147,21 @@ class HueSpillViewModel extends StateNotifier<HueSpillState> {
 
   void undo() {
     if (_history.isNotEmpty) {
-      state = _history.removeLast();
+      final currentElapsed = state.elapsedSeconds;
+      state = _history.removeLast().copyWith(elapsedSeconds: currentElapsed);
+      if (state.status == HueSpillStatus.playing && (_timer == null || !_timer!.isActive)) {
+        _startTimer();
+      }
     }
   }
 
   void resetLevel() {
     initGame(state.level);
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 }
